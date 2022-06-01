@@ -5,9 +5,9 @@ import { MovieService } from '../Services/MovieService.js';
 const router = Router();
 const movieService = new MovieService();
 
-router.get('/all', Authenticate, async (req, res) => {
+router.get('', Authenticate, async (req, res) => {
   console.log(`This is a get operation`);
-  const Movies = await movieService.getMovie(req.query.titulo, req.query.order);
+  const Movies = await movieService.getMovie(req.params.titulo, req.params.order);
   return res.status(200).json(Movies);
 });
 
@@ -20,7 +20,7 @@ router.get('/:id', Authenticate, async (req, res) => {
   return res.status(200).json(Movie);
 });
 
-router.post('/create', Authenticate, async (req, res) => {
+router.post('', Authenticate, async (req, res) => {
   console.log(`This is a post operation`);
 
   const Movie = await movieService.createMovie(req.body);
@@ -28,7 +28,7 @@ router.post('/create', Authenticate, async (req, res) => {
   return res.status(201).json(Movie);
 });
 
-router.put('/update/:id', Authenticate, async (req, res) => {
+router.put('/:id', Authenticate, async (req, res) => {
   console.log(`Request URL Param: ${req.params.id}`);
   console.log(`This is a put operation`);
 
@@ -37,7 +37,7 @@ router.put('/update/:id', Authenticate, async (req, res) => {
   return res.status(200).json(Movie);
 });
 
-router.delete('/delete/:id', Authenticate, async (req, res) => {
+router.delete('/:id', Authenticate, async (req, res) => {
   console.log(`Request URL Param: ${req.params.id}`);
   console.log(`This is a delete operation`);
 

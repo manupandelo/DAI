@@ -5,9 +5,9 @@ import { PersonaService } from '../Services/PersonaService.js';
 const router = Router();
 const personaService = new PersonaService();
 
-router.get('/all', Authenticate, async (req, res) => {
-  console.log(`This is a get operation`);
-  const Personas = await personaService.getPersona(req.query.nombre, req.query.edad ,req.query.peso, req.query.idMovie);
+router.get('', Authenticate ,async (req, res) => {
+  console.log(`This is a get operation. Nombre: ${req.params.id}, Edad:${req.params.edad}, Peso:${req.params.peso}, idpeli: ${req.params.idMovie} `);
+  const Personas = await personaService.getPersona(req.params.nombre, req.params.edad ,req.params.peso, req.params.idMovie);
   return res.status(200).json(Personas);
 });
 
@@ -20,7 +20,7 @@ router.get('/:id', Authenticate, async (req, res) => {
   return res.status(200).json(Persona);
 });
 
-router.post('/create', Authenticate, async (req, res) => {
+router.post('', Authenticate, async (req, res) => {
   console.log(`This is a post operation`);
 
   const Persona = await personaService.createPersona(req.body);
@@ -28,7 +28,7 @@ router.post('/create', Authenticate, async (req, res) => {
   return res.status(201).json(Persona);
 });
 
-router.put('/update/:id', Authenticate, async (req, res) => {
+router.put('/:id', Authenticate, async (req, res) => {
   console.log(`Request URL Param: ${req.params.id}`);
   console.log(`This is a put operation`);
 
@@ -37,7 +37,7 @@ router.put('/update/:id', Authenticate, async (req, res) => {
   return res.status(200).json(Persona);
 });
 
-router.delete('/delete/:id', Authenticate, async (req, res) => {
+router.delete('/:id', Authenticate, async (req, res) => {
   console.log(`Request URL Param: ${req.params.id}`);
   console.log(`This is a delete operation`);
 

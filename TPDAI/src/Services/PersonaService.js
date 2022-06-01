@@ -10,31 +10,25 @@ export class PersonaService {
 
     getPersona = async (nombre, edad, peso, idMovie) => {
         console.log('This is a function on the service');
-        let response;
+        let query=`SELECT * from ${PersonaTabla} `;
+        if(nombre ){
+            query+=` and nombre=@Nombre`;              
+        }else if(edad){
+            query+=` and edad=@Edad`;
+        }else if(idMovie){
+            query+=` and ${IntermediaTabla}.idPelicula=@IdPelicula`; 
+        }else if(peso){
+            query+=` and peso=@Peso `;
+        }else{
+            query=`SELECT * from ${PersonaTabla}`;
+        }
         const pool = await sql.connect(config);
-        if(!nombre){
-            if(!edad){
-                 response = await pool.request().query(`SELECT * from ${PersonaTabla}`);
-                 
-            }else{
-                response = await pool.request()
-                .input('edad',sql.Int, edad)
-                .query(`SELECT * from ${PersonaTabla} where edad = @edad`);
-            }
-        }
-        else{
-            if(!edad){
-                response = await pool.request()
-                .input('nombre',sql.VarChar, nombre)
-                .query(`SELECT * from ${PersonaTabla} where nombre= @nombre`);
-            }
-            else{
-                response = await pool.request()
-                .input('nombre',sql.VarChar, nombre)
-                .input('nombre',sql.VarChar, nombre)
-                .query(`SELECT * from ${PersonaTabla} where nombre= @nombre && edad = @edad`);
-            }
-        }
+        const response = await pool.request()
+        .input('Nombre', sql.VarChar, nombre)
+        .input('Edad', sql.Int, edad)
+        .input('IdPelicula', sql.Int, idMovie)
+        .input('Peso', sql.Int, peso)
+        .query(query);
         console.log(response)
         return response.recordset;
     }
@@ -42,22 +36,23 @@ export class PersonaService {
     getPersonaById = async (id) => {
         console.log('This is a function on the service');
         let persona;
-        let movie
+        let movie;
 
         const pool = await sql.connect(config);
         persona = await pool.request()
             .input('id', sql.Int, id)
             .query(`Select * FROM ${PersonaTabla} where id = @id`);
-        console.log(personaje)
+        console.log(persona);
 
+        console.log('entering second function');
         movie = await pool.request()
             .input('id', sql.Int, id)
-            .query(`select  titulo from ${MovieTabla} inner join ${IntermediaTabla} on ${MovieTabla}.id = ${IntermediaTabla}.idMovie inner join ${PersonaTabla} on ${PersonaTabla}.id = ${IntermediaTabla}.idPersona AND ${PersonaTabla}.id = @id`);
-        console.log(serie)
+            .query(`select ${MovieTabla}.titulo from ${PersonaTabla} inner join ${IntermediaTabla} on ${PersonaTabla}.id = ${IntermediaTabla}.idPersona inner join ${MovieTabla} on  ${IntermediaTabla}.idMovie = ${MovieTabla}.id where ${PersonaTabla}.id = @id`);
+        console.log(movie)
 
-        personaje.recordset[0].seriesAsociadas = serie.recordset;
+        persona.recordset[0].seriesAsociadas = movie.recordset;
 
-        return personaje.recordset;
+        return persona.recordset;
     }
 
     createPersona = async (Persona) => {
@@ -79,6 +74,8 @@ export class PersonaService {
     updatePersonaById = async (id, Persona) => {
         console.log('This is a function on the service');
         console.log(id, Persona)
+        
+
         const pool = await sql.connect(config);
         const response = await pool.request()
             .input('id', sql.Int, id ?? '')

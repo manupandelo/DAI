@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {BASE_URL2} from '../config.js'
 
-const alkemyClient = axios.create({
+const Client = axios.create({
     baseURL: BASE_URL2,
     
 })
@@ -16,7 +16,20 @@ const alkemyClient = axios.create({
     }
 });/*/
 
-export default alkemyClient;
+export const enterlogin = async (userState) => {
+    console.log(userState)
+    return Client
+      .post(``, {
+        ...userState
+      })
+      .then(async(res) => {
+        
+      })
+      .catch((e) => {
+        console.log(`register error`, e.response);
+        throw "error" //propagar error
+      });
+  };
 
 
 

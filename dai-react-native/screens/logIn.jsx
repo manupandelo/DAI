@@ -2,8 +2,9 @@ import React, {useState, useEffect, useContext} from 'react';
 import { StyleSheet, Text, View, Image, ImageBackground, FlatList, TextInput, TouchableOpacity, ScrollView, Alert} from 'react-native';
 import BotonOne from "../components/BotonOne";
 import { useNavigation } from '@react-navigation/native';
+//import {ActionTypes, useContextState, setContextState} from '../Context'
 
-import {enterlogin} from '../services/loginService';
+import {enterlogin} from '../services/alkemyClient';
 import Girador from '../components/girador';
 
 const logIn =({navigation})=>{
@@ -22,7 +23,11 @@ const logIn =({navigation})=>{
       Alert.alert("Por favor ingresar todos los datos")
     } else {
       setLoaded(true)
-      await enterlogin(userState).then(() => {
+      await enterlogin(userState).then((data) => {
+        /*setContextState({
+          type: ActionTypes.SetToken,
+          value: data.token,
+        })*/
         setLoaded(false)
         Alert.alert("correctooooo")
         navigation.navigate("Home")

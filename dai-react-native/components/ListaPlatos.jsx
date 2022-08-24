@@ -3,7 +3,7 @@ import { View, FlatList, StyleSheet, Text, StatusBar, Image, TouchableOpacity } 
 
 const Item = ({ title, image, navigation, id}) => (
   <TouchableOpacity
-    onPress={ () =>{ navigation.navigate('Detalle',{id:id})}}
+    onPress={ () =>{ navigation.navigate('Detalle',{id})}}
   >
    
     <View style={styles.item}>

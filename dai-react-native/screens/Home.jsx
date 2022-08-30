@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useState, FlatList} from 'react';
-import { StyleSheet, Text, View, TextInput} from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button} from 'react-native';
 import {searchRecipe} from '../services/PlatosClient';
 import ListaPlatos from '../Components/ListaPlatos';
 
@@ -9,7 +9,6 @@ const Home =({navigation})=>{
   return (
     
     <View>
-
             <Text style={styles.titulo}>Buscador de Platos</Text>
 
               <TextInput   
@@ -29,7 +28,6 @@ const Home =({navigation})=>{
             />
             
             <ListaPlatos navigation={navigation} platos={platos}></ListaPlatos>
-            
     </View>
     
   );

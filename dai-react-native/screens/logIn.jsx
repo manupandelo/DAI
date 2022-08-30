@@ -5,7 +5,6 @@ import { useNavigation } from '@react-navigation/native';
 //import {ActionTypes, useContextState, setContextState} from '../Context'
 
 import {enterlogin} from '../services/alkemyClient';
-import Girador from '../components/girador';
 
 const logIn =({navigation})=>{
  
@@ -46,7 +45,7 @@ const logIn =({navigation})=>{
 
 
           <View style={styles.container}>
-            {loaded && <Girador/>}
+            {loaded}
   
         <Text style={styles.titulo}>Inicio de sesión</Text>
         

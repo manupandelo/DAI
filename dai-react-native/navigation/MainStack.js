@@ -6,6 +6,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import logIn from '../screens/logIn'
 import Home from '../screens/Home'
 import Detalle from '../screens/Detalle'
+import Menu from '../screens/Menu'
+
 const Stack = createNativeStackNavigator()
 
 const MainStack =()=>{
@@ -30,6 +32,10 @@ return(
         <Stack.Screen
             name='Detalle'
             component={ Detalle }
+        />
+        <Stack.Screen
+            name='Menu'
+            component={ Menu }
         />
     </Stack.Navigator>
 </NavigationContainer>

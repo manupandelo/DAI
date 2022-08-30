@@ -1,50 +1,39 @@
-import React from "react";
-import { getRecipeInformation } from "../services/PlatosClient";
-import { StyleSheet, Text, View} from 'react-native';
-import {ActionTypes, useContextState} from '../Context'
+import React, { Component, useEffect, useState, FlatList } from 'react';
+import { StyleSheet, Text, View, TextInput, Div } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import CardPlato from '../Components/CardPlato';
+import { getRecipeInformation } from '../services/platosClient';
 
-const Detalle = ({route, navigation})=>{
-    const {id}=route.params.id;
-    const [Detalle, setDetalle] = useState([]);
 
-    console.log(id);    
-    useEffect(()=>{
-        getRecipeInformation(id).then((data) => {
-            setDetalle(data) 
-            console.log(data) 
-        })
-        .catch(() => {
-            console.log("Datos mal")   
-        })
-    },[]);
+const DetallePlato = ({ route, navigation }) => {
+  const { id } = route.params;
+  const [Detalle, setDetalle] = useState([]);
 
-    return (
-        <View>
-            <Text>Profesor:</Text>
-    
-            <FlatList
-                data={Detalle}
-                keyExtractor={ (item) => item.id}
-                renderItem = {({item, index}) => (    
-                    <View>   
-                        <Text>
-                            {item.nombre} {item.apellido} 
-                            {item.ubicacion} {item.disponibilidad}
-                        </Text>
-                            <CustomButton text={"Reservar Clase"} onPress={() => navigation.navigate('ReservarClase', {
-                                id: item.id,
-                        })}/>
-                    </View>
-                )}
 
-            />
-        </View>
-    )
+  useEffect(() => {
+    getRecipeInformation(id).then((data) => {
+      setDetalle(data)
+      console.log(data)
+    })
+      .catch(() => {
+        console.log("Datos mal")
+      })
+  }, [])
+
+  return (
+
+    <View>
+
+      <CardPlato navigation={navigation} Detalle={Detalle}></CardPlato>
+
+
+    </View>
+
+  );
 }
-
-export default Detalle
+export default DetallePlato
 
 const styles = StyleSheet.create({
-   
-        
-  });
+
+
+});

@@ -8,29 +8,25 @@ const PlatosClient = axios.create({
 export const searchRecipe = async (Plato) => {
     console.log(Plato)
     return PlatosClient
-    .get(`recipes/complexSearch?apiKey=9af60a72368a4775961ea73c41f80fbe&query=${Plato}`,{})
+    .get(`recipes/complexSearch?apiKey=4412dd03082e4e76929bf09da5187843&query=${Plato}`,{})
     .then(async(res) => {
         const info=res.data.results
         console.log(info)
         return info
     })
-    .catch((e) => {
-      console.log(`register error`, e.response);
+    .catch(() => {
       throw "error" //propagar error
     });
 };
 
 export const getRecipeInformation = async (id) => {
     console.log(id);
-    return axiosClient.get(`recipes/${id}/information/complexSearch?apiKey=bb614d1a2cfe4751b4f2aea0a3844a1c`,{})
+    return PlatosClient.get(`recipes/${id}/information`,{params:{apiKey:'4412dd03082e4e76929bf09da5187843'}})
     .then(function(res){
-        const info = res.data.results
-        console.log(info)
-        return info
+        return res.data
     })
-    .catch((e) => {
-        console.log(`register error`, e.response);
-        throw "error"
+    .catch(() => {
+        throw "Error"
     });
 };
 

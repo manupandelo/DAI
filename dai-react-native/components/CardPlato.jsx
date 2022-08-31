@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { View, FlatList, StyleSheet, Text, StatusBar, Image, Button } from 'react-native';
 import { ActionTypes, useContextState } from '../Context'
-//import BotonAgregar from "../Components/BotonAgregar";
-//import BotonEliminar from "../Components/BotonEliminar";
+
+
 
 const Item = ({ title, image }) => (
   <View>
@@ -21,34 +21,27 @@ const CardPlato = (props) => {
   let existePlato = contextState.menu.lista.find(plato => plato.id === Detalle.id)
 
   return (
-    <View>
-      <Text>{Detalle.title}</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>{Detalle.title}</Text>
       <Item image={Detalle.image}/>         
       <Text>${Detalle.pricePerServing} / {Detalle.readyInMinutes} mins.</Text>
       <Text>Puntaje de Saludable: {Detalle.healthScore}</Text>
-      { Detalle.vegan ?
-          <Text>Vegano: Sí</Text>
-      :
-          Detalle.vegan ? 
-              <Text>Vegano: Sí</Text>
-          :
-              <Text>Vegano: No</Text>
+      {
+        Detalle.vegan ? 
+            <Text>Vegano: Sí</Text>
+        :
+            <Text>Vegano: No</Text>
       }
       { Detalle.vegetarian ?
           <Text>Vegetariano: Sí</Text>
       :
-          Detalle.vegetarian ?
-              <Text>Vegano: Sí</Text>
-          :
-              <Text>Vegano: No</Text>
+          <Text>Vegetariano: No</Text>
       }
-      { Detalle.glutenFree ?
-          <Text>Libre de Gluten: Sí</Text>
-      :
-          Detalle.glutenFree ?
-              <Text>Libre de Gluten: Sí</Text>
-          :
-              <Text>Libre de Gluten: No</Text>
+      {
+        Detalle.glutenFree ?
+            <Text>Libre de Gluten: Sí</Text>
+        :
+            <Text>Libre de Gluten: No</Text>
       }
       {
         existePlato
@@ -81,7 +74,6 @@ const CardPlato = (props) => {
               title="AGREGAR"
               onPress={async () => {
                 console.log("Agregando al menu")
-                console.log(Detalle)
                 setContextState({
                   type: ActionTypes.SetMenuPrecio,
                   value: Detalle.pricePerServing,
@@ -100,59 +92,11 @@ const CardPlato = (props) => {
             />
           </>
       }
-
     </View>
   );
 }
 
-/* {
-        existePlato
-          ?
-          <>
-            <Button style={{ fontSize: 48 }}
-              text="ELIMINAR"
-              onPress={async () => {
-                setContextState({
-                  type: ActionTypes.SetEliminarId,
-                  value: Detalle.pricePerServing,
-                });
 
-                setContextState({
-                  type: ActionTypes.SetEliminarId,
-                  value: Detalle.healthScore,
-                });
-                setContextState({
-                  type: ActionTypes.SetEliminarId,
-                  value: Detalle,
-                });
-                navigation.navigate('Home')
-              }}
-            />
-          </>
-          :
-          <>
-            <Button style={{ fontSize: 48 }}
-              text="AGREGAR"
-              onPress={async () => {
-                console.log(Detalle)
-                setContextState({
-                  type: ActionTypes.SetMenuPrecio,
-                  value: Detalle.pricePerServing,
-                });
-
-                setContextState({
-                  type: ActionTypes.SetMenuHealthScore,
-                  value: Detalle.healthScore,
-                });
-                setContextState({
-                  type: ActionTypes.SetMenuLista,
-                  value: Detalle,
-                });
-                navigation.navigate('Home')
-              }}
-            />
-          </>
-      } */
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -164,13 +108,17 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     marginHorizontal: 12,
   },
-  title: {
-    fontSize: 15,
-  },
   image: {
-    width: 70,
-    height: 70,
+    width: 300,
+    height: 300,
   },
+  title:{
+    top: '8%',
+      marginLeft:'-13%',
+      fontSize: 34,
+      marginRight: 'auto',
+      marginLeft: 'auto',
+  }
 });
 
 export default CardPlato;

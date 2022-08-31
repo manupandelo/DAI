@@ -2,10 +2,11 @@ import React, { Component, useEffect, useState, FlatList} from 'react';
 import { StyleSheet, Text, View, TextInput, Button} from 'react-native';
 import {searchRecipe} from '../services/axios';
 import ListaPlatos from '../Components/ListaPlatos';
+import { useContextState } from '../Context';
 
-const Home =({navigation})=>{
+const Home=({navigation})=>{
   const [platos, setPlatos] = useState([]); //Setplatos le da el valor a platos
-
+  const [contextState, setContextState] = useContextState();
   return (
     <View>
       <Text style={styles.titulo}>Buscador de Platos</Text>
@@ -27,13 +28,14 @@ const Home =({navigation})=>{
       />      
       <ListaPlatos navigation={navigation} platos={platos}></ListaPlatos>
       <Text style={styles.titulo}>MENU</Text>
-      <Menu></Menu>
+      <ListaPlatos navigation={navigation} platos={contextState.menu.lista}></ListaPlatos>
+
 
     </View>
   );
 }
 export default Home
-
+//<ListaPlatos navigation={navigation} platos={contextState.lista}></ListaPlatos>
 const styles = StyleSheet.create({
     container:{
       alignItems: 'center',
@@ -55,6 +57,6 @@ const styles = StyleSheet.create({
       height: 40,
       margin: 12,
       borderWidth: 1,
-      padding: 10
+      padding: 10,
     } 
   });

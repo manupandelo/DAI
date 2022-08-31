@@ -21,12 +21,8 @@ const ListaPlatos = (props) => {
   return (
     <TouchableOpacity>
       <FlatList
-
         data={platos}
         renderItem={({ item }) => <Item navigation={navigation} title={item.title} image={item.image} id={item.id} />} 
-        //agarra el objeto platos y lo separa en cada componente que almacena en item 
-        //y lo convierte en un componente item y le envia la info del string 
-        // a Item y lo muestra en Item
         keyExtractor={item => item.id}
         
       />

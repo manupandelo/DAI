@@ -1,21 +1,23 @@
 import React from 'react';
 import MainStack from './navigation/MainStack';
 import logIn from './screens/logIn';
-import ContextProvider from './ContextState';
-import authContext from './ContextState';
+import Context, { ContextProvider } from './Context';
 
 export default function App() {
   
   return ( 
-    
-  <authContext.Provider value={{ token, setToken }}>
-    
-      { token ?
+         <ContextProvider>
+          <MainStack/>
+         </ContextProvider>  
+  );
+
+}
+ 
+
+/*<Context.Provider value={{ contextState, setContextState }}>
+      { ContextState.token ?
         <MainStack/>
       :
         <logIn/>
       }
-  </authContext.Provider>  
-  );
-
-}
+  </Context.Provider>*/

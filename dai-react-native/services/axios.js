@@ -23,11 +23,10 @@ export const getRecipeInformation = async (id) => {
     });
 };
 
-export const enterlogin = async (email, password) => {
-    console.log(userState)
+export const enterlogin = async (user) => {
+    console.log(user)
     return axios.post(`http://challenge-react.alkemy.org`, {
-        email: email,
-        password: password
+        ...user
       })
       .then(() => {
         return true

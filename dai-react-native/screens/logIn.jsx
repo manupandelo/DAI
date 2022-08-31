@@ -1,25 +1,44 @@
+import { DarkTheme } from '@react-navigation/native';
 import React, {useState, useEffect, useContext} from 'react';
 import { StyleSheet, Text, View, Image, ImageBackground, FlatList, TextInput, TouchableOpacity, ScrollView, Alert, Button} from 'react-native';
+import Context from '../Context';
+import {useContextState } from '../Context'
 import {enterlogin} from '../services/axios';
  
-const logIn = () => {
-  const { setToken } = useContext(authContext);
+const logIn = ({navigation}) => {
+  const { contextState, setContextState } = useContextState(Context);
   const [userState, setUserState] = useState({
-    email: '',
-    password: '',
+    email: 'challenge@alkemy.org',
+    password: 'react',
   });
   
+  const onLogInPress = async (e) => {
+    
+    if (!userState.email|| !userState.password){
+      console.log("Por favor ingresar todos los datos")
+    } else {
+      console.log("datos completos, entra a loguearse")
+      enterlogin(userState).then(() => {
+        console.log("entro")
+        navigation.navigate('Home')
+      })
+      .catch(() => {
+        Alert.alert("Datos incorrectos")
+      });
+    }
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.titulo}>Inicio de sesión</Text> 
       <TextInput
-        style={styles.textInput}
+        style={styles.input}
         placeholder="Email"
         value={userState.email}
         onChangeText={text => setUserState({...userState, email: text}) }
       />
       <TextInput
-        style={styles.textInput}
+        style={styles.input}
         placeholder="Password"
         value={userState.password}
         secureTextEntry={true}
@@ -27,14 +46,7 @@ const logIn = () => {
       />   
       <Button
         title="Iniciar sesion"
-        onPress={async () => {
-          if (!userState.email || !userState.password) {
-              console.log('llenar todos los datos');
-          } else {
-              const res = await enterlogin(userState.email, userState.password);
-              setToken(res)
-          }
-        }}
+        onPress={onLogInPress}
       ></Button>
     </View>  
   );
@@ -44,28 +56,19 @@ export default logIn;
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    height:'100%',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flex:1
   },
-  titulo: {
-    textAlign: 'center',
-    marginBottom: 20,
-    color: 'blue',
-    fontSize:25,
-    fontFamily: 'Kanit-Regular'
-  },
-  texto:{
-    marginTop:'-25%',
-    color: 'white'
-  },
-  textInput: {
+  input:{
+    backgroundColor: 'white',
+    borderColor: 'black',
+    borderRadius: 5, //lo curva del borde
+    paddingHorizontal: 10,
+    marginVertical: 5,
+    height: 40,
+    margin: 12,
     borderWidth: 1,
-    padding: 15,
-    width: "80%",
-    borderRadius: 8,
-    backgroundColor: "#fff",
-    marginTop: 15,
-    marginBottom: -5
+    padding: 10
   }
 });

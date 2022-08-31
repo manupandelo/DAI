@@ -36,8 +36,8 @@ const ListaPlatos = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
+    justifyContent:'center',
+    alignItems: 'center',
   },
   item: {
     padding: 20,

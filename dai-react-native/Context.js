@@ -8,6 +8,7 @@ export const initialState = {
         precio: 0,
         HealthScore: 0,
         lista: [],
+        eliminarId: [],
         vegan:0,
         notVegan:0
     },
@@ -20,7 +21,8 @@ export const ActionTypes = {
     SetMenuHealthScore: "SET_MENU_HEALTHSCORE",
     SetMenuLista: "SET_MENU_LISTA",
     SetVegan:"SET_VEGAN",
-    SetNotVegan:"SET_NOT_VEGAN"
+    SetNotVegan:"SET_NOT_VEGAN",
+    SetEliminarId:"SET_ELIMINAR_ID"
 };
 
 export const reducer = (state = {}, action) => {
@@ -63,6 +65,14 @@ export const reducer = (state = {}, action) => {
                 ...state,
                 notVegan:action.value,
             };
+        case ActionTypes.SetEliminarId:
+            return {
+                ...state,
+                menu: {
+                    ...state.menu,
+                    lista: state.menu.lista.filter((plato) => plato.id !== action.value)
+                }
+            };
         default:
             return state;
     }
@@ -75,6 +85,8 @@ export const initialContext = {
 
 const Context = React.createContext(initialContext);
 
+export default Context;
+
 export function ContextProvider({ children, initial = initialState }) {
     const [state, dispatch] = React.useReducer(reducer, initial);
 
@@ -84,12 +96,4 @@ export function ContextProvider({ children, initial = initialState }) {
     return <Context.Provider value={{ contextState, setContextState }}>{children}</Context.Provider>;
 }
 
-export const useContextState = () => useContext(Cont);
-
-
-const authContext = createContext({
-    token: false,
-    setToken: (token) => {}
-});
-
-export default authContext;
+export const useContextState = () => useContext(Context);

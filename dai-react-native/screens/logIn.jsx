@@ -1,85 +1,46 @@
 import React, {useState, useEffect, useContext} from 'react';
-import { StyleSheet, Text, View, Image, ImageBackground, FlatList, TextInput, TouchableOpacity, ScrollView, Alert} from 'react-native';
-import BotonOne from "../components/BotonOne";
-import { useNavigation } from '@react-navigation/native';
-//import {ActionTypes, useContextState, setContextState} from '../Context'
-
-import {enterlogin} from '../services/alkemyClient';
-
-const logIn =({navigation})=>{
+import { StyleSheet, Text, View, Image, ImageBackground, FlatList, TextInput, TouchableOpacity, ScrollView, Alert, Button} from 'react-native';
+import {enterlogin} from '../services/axios';
  
+const logIn = () => {
+  const { setToken } = useContext(authContext);
   const [userState, setUserState] = useState({
     email: '',
     password: '',
   });
-
-  const [loaded, setLoaded] = useState(false)
-
-  const onLogInPress = async (e) => {
-    
-    if (!userState.email|| !userState.password){
-      
-      Alert.alert("Por favor ingresar todos los datos")
-    } else {
-      setLoaded(true)
-      await enterlogin(userState).then((data) => {
-        /*setContextState({
-          type: ActionTypes.SetToken,
-          value: data.token,
-        })*/
-        setLoaded(false)
-        Alert.alert("correctooooo")
-        navigation.navigate("Home")
-      })
-      .catch(() => {
-        setLoaded(false)
-        Alert.alert("Datos incorrectos")
-      });
-    }
-  }
-
-
- 
-
-  return (
-
-
-          <View style={styles.container}>
-            {loaded}
   
-        <Text style={styles.titulo}>Inicio de sesión</Text>
-        
-        <TextInput
-            style={styles.textInput}
-            
-            placeholder="Ingrese su Email"
-            name="Email"
-            value={userState.email}
-            onChangeText={text => setUserState({...userState, email: text}) }
-          
-          />
-          
-          <TextInput
-            style={styles.textInput}
-            placeholder="Ingrese su Password"
-            name="Password"
-            value={userState.password}
-            secureTextEntry={true}
-            onChangeText={text => setUserState({...userState, password: text})}
-          />   
-          
-          <BotonOne
-            text="Iniciar Sesion"
-            title="Iniciar Sesion"
-            onPress={onLogInPress}
-            />
-            
- 
- </View>  
+  return (
+    <View style={styles.container}>
+      <Text style={styles.titulo}>Inicio de sesión</Text> 
+      <TextInput
+        style={styles.textInput}
+        placeholder="Email"
+        value={userState.email}
+        onChangeText={text => setUserState({...userState, email: text}) }
+      />
+      <TextInput
+        style={styles.textInput}
+        placeholder="Password"
+        value={userState.password}
+        secureTextEntry={true}
+        onChangeText={text => setUserState({...userState, password: text})}
+      />   
+      <Button
+        title="Iniciar sesion"
+        onPress={async () => {
+          if (!userState.email || !userState.password) {
+              console.log('llenar todos los datos');
+          } else {
+              const res = await enterlogin(userState.email, userState.password);
+              setToken(res)
+          }
+        }}
+      ></Button>
+    </View>  
   );
 }
 
-export default logIn
+export default logIn;
 
 const styles = StyleSheet.create({
   container: {

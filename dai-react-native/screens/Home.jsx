@@ -1,6 +1,6 @@
 import React, { Component, useEffect, useState, FlatList} from 'react';
 import { StyleSheet, Text, View, TextInput, Button} from 'react-native';
-import {searchRecipe} from '../services/PlatosClient';
+import {searchRecipe} from '../services/axios';
 import ListaPlatos from '../Components/ListaPlatos';
 
 const Home =({navigation})=>{

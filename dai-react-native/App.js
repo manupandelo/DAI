@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, ImageBackground, Button, TouchableOpacity} from 'react-native';
+import React from 'react';
 import MainStack from './navigation/MainStack';
-import * as Font from 'expo-font';
-import { ContextProvider } from './Context';
+import logIn from './screens/logIn';
+import Context from './Context';
 
 
 export default function App() {
   
-  return (
-   
-    <ContextProvider> <MainStack/> </ContextProvider>
-    
-
+  return ( 
+    <Context>
+      { Context.token ?
+        <MainStack/>
+      :
+        <logIn/>
+      }
+    </Context>
   );
 
 }

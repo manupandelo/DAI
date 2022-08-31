@@ -1,37 +1,31 @@
 import * as React from "react";
 import { useContext } from "react";
+import { createContext } from "react"
 
 export const initialState = {
-    loading: true,
-    token: "",
+    token:false,
     menu: {
         precio: 0,
         HealthScore: 0,
         lista: [],
-        //eliminarId: [],
-        //igualar: eliminarId,
+        vegan:0,
+        notVegan:0
     },
 };
 
 export const ActionTypes = {
-    SetLoading: "SET_LOADING",
-    SetToken: "SET_TOKEN",
+    setToken: "SET_TOKEN",
     SetMenu: "SET_MENU",
     SetMenuPrecio: "SET_MENU_PRECIO",
     SetMenuHealthScore: "SET_MENU_HEALTHSCORE",
     SetMenuLista: "SET_MENU_LISTA",
-    SetEliminarId: "SET_ELIMINAR_ID",
-    SetIgualar: "SET_IGUALAR"
+    SetVegan:"SET_VEGAN",
+    SetNotVegan:"SET_NOT_VEGAN"
 };
 
 export const reducer = (state = {}, action) => {
     switch (action.type) {
-        case ActionTypes.SetLoading:
-            return {
-                ...state,
-                loading: action.value,
-            };
-        case ActionTypes.SetToken:
+        case ActionTypes.setToken:
             return {
                 ...state,
                 token: action.value,
@@ -59,18 +53,15 @@ export const reducer = (state = {}, action) => {
                     lista: [...state.menu.lista, action.value],
                 }
             };
-        case ActionTypes.SetIgualar:
+        case ActionTypes.SetVegan:
             return {
                 ...state,
-                igualar: lista,
+                vegan: action.value,
             };
-        case ActionTypes.SetEliminarId:
+        case ActionTypes.SetNotVegan:
             return {
                 ...state,
-                menu: {
-                    ...state.menu,
-                    lista: [...state.lista.filter((plato) => plato.id !== action.value)]
-                }
+                notVegan:action.value,
             };
         default:
             return state;
@@ -82,7 +73,7 @@ export const initialContext = {
     setContextState: () => { },
 };
 
-const Cont = React.createContext(initialContext);
+const Context = React.createContext(initialContext);
 
 export function ContextProvider({ children, initial = initialState }) {
     const [state, dispatch] = React.useReducer(reducer, initial);
@@ -90,7 +81,15 @@ export function ContextProvider({ children, initial = initialState }) {
     const contextState = state;
     const setContextState = dispatch;
 
-    return <Cont.Provider value={{ contextState, setContextState }}>{children}</Cont.Provider>;
+    return <Context.Provider value={{ contextState, setContextState }}>{children}</Context.Provider>;
 }
 
 export const useContextState = () => useContext(Cont);
+
+
+const authContext = createContext({
+    token: false,
+    setToken: (token) => {}
+});
+
+export default authContext;

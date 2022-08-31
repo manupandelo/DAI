@@ -2,7 +2,7 @@ import React, { Component, useEffect, useState, FlatList } from 'react';
 import { StyleSheet, Text, View, TextInput, Div } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import CardPlato from '../Components/CardPlato';
-import { getRecipeInformation } from '../services/platosClient';
+import { getRecipeInformation } from '../services/axios';
 
 
 const DetallePlato = ({ route, navigation }) => {

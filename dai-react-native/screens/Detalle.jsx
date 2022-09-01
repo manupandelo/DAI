@@ -9,12 +9,13 @@ import {useContextState } from '../Context'
 const DetallePlato = ({ route, navigation }) => {
   const { id } = route.params;
   const [Detalle, setDetalle] = useState([]);
-  const [contextState, setContextState] = useContextState
+  const {contextState, setContextState} = useContextState()
 
   useEffect(() => {
     if(!contextState.token){
       navigation.navigate("logIn")
     }
+    console.log("HAY TOKEN")
     getRecipeInformation(id).then((data) => {
       setDetalle(data)
       console.log(data)

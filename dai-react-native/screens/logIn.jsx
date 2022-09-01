@@ -6,7 +6,7 @@ import {useContextState, ActionTypes } from '../Context'
 import {enterlogin} from '../services/axios';
  
 const logIn = ({navigation}) => {
-  const { contextState, setContextState } = useContextState(Context);
+  const { contextState, setContextState } = useContextState();
   const [userState, setUserState] = useState({
     email: 'challenge@alkemy.org',
     password: 'react',
@@ -18,15 +18,16 @@ const logIn = ({navigation}) => {
       console.log("Por favor ingresar todos los datos")
     } else {
       console.log("datos completos, entra a loguearse")
-      enterlogin(userState).then(() => {
+      enterlogin(userState).then((token)=>{
         setContextState({
-          type: ActionTypes.setToken,
-          value:true,
-        });
+          type: ActionTypes.SetToken,
+          value: token
+        })
         console.log("entro")
-        navigation.navigate('Home')
+        navigation.navigate("Home")
       })
       .catch(() => {
+        console.log("Error contraseña o email")
         Alert.alert("Datos incorrectos")
       });
     }
@@ -62,7 +63,8 @@ const styles = StyleSheet.create({
   container: {
       alignItems: 'center',
       justifyContent: 'center',
-      flex:1
+      flex:1,
+      backgroundColor:'white',
   },
   input:{
     backgroundColor: 'white',

@@ -1,53 +1,67 @@
-import * as React from "react";
-import { useContext } from "react";
-import { createContext } from "react"
+import React, { useContext } from "react";
 
 export const initialState = {
-    token:false,
+    token:"",
+    loading: false,
     menu: {
-        precio: 0,
-        HealthScore: 0,
-        lista: [],
-        eliminarId: [],
-        vegan:0,
-        notVegan:0
+       precio: 0,
+       healthscorePromedio: 0,
+       healthscoreTotal:0,
+       cantPlatos: 0,
+       listaPlatos:[],
+       cantVeganos:0,
+       cantNoVeganos:0,
+       eliminarId: []
     },
 };
 
 export const ActionTypes = {
-    setToken: "SET_TOKEN",
-    SetMenu: "SET_MENU",
-    SetMenuPrecio: "SET_MENU_PRECIO",
-    SetMenuHealthScore: "SET_MENU_HEALTHSCORE",
-    SetMenuLista: "SET_MENU_LISTA",
-    SetVegan:"SET_VEGAN",
-    SetNotVegan:"SET_NOT_VEGAN",
-    SetEliminarId:"SET_ELIMINAR_ID"
+    SetToken: 'SET_TOKEN',
+    SetLoading: 'SET_LOADING',
+    SetMenu: 'SET_MENU',
+    SetPrecio: 'SET_PRECIO',
+    SetHealthscorePromedio: 'SET_HEALTHSCORE_PROMEDIO',
+    SetHealthscoreTotal: 'SET_USER_FIRST_NAME',
+    SetCantPlatos: 'SET_CANT_PLATOS',
+    SetListaPlatos: 'SET_LISTA_PLATOS',
+    SetCantVeganos: 'SET_CANT_VEGANOS',
+    SetCantNoVeganos:'SET_CANT_NO_VEGANOS',
+    SetEliminarId: 'SET_ELIMINAR_ID'
 };
 
 export const reducer = (state = {}, action) => {
     switch (action.type) {
-        case ActionTypes.setToken:
-            return {
-                ...state,
-                token: action.value,
-            };
+      case ActionTypes.SetToken:
+        return {
+            ...state,
+            token: action.value,
+        };
+        case ActionTypes.setUser:
+        return {
+            ...state,
+            user: action.value,
+        };
         case ActionTypes.SetMenu:
             return {
                 ...state,
                 menu: action.value,
             };
-        case ActionTypes.SetMenuPrecio:
+        case ActionTypes.SetPrecio:
             return {
                 ...state,
                 precio: action.value,
             };
-        case ActionTypes.SetMenuHealthScore:
+        case ActionTypes.SetHealthscorePromedio:
             return {
                 ...state,
-                HealthScore: action.value,
+                healthscorePromedio: action.value,
             };
-        case ActionTypes.SetMenuLista:
+            case ActionTypes.SetHealthscoreTotal:
+            return {
+                ...state,
+                healthscoreTotal: action.value,
+            };
+        case ActionTypes.SetLista:
             return {
                 ...state,
                 menu: {
@@ -55,12 +69,12 @@ export const reducer = (state = {}, action) => {
                     lista: [...state.menu.lista, action.value],
                 }
             };
-        case ActionTypes.SetVegan:
+        case ActionTypes.SetCantVeganos:
             return {
                 ...state,
                 vegan: action.value,
             };
-        case ActionTypes.SetNotVegan:
+        case ActionTypes.SetCantNoVeganos:
             return {
                 ...state,
                 notVegan:action.value,
@@ -70,30 +84,32 @@ export const reducer = (state = {}, action) => {
                 ...state,
                 menu: {
                     ...state.menu,
-                    lista: state.menu.lista.filter((plato) => plato.id !== action.value)
+                    lista: state.menu.listaPlatos.filter((plato) => plato.id !== action.value)
                 }
-            };
-        default:
-            return state;
-    }
+            }
+default:
+    return state;
+    
+}
 };
 
 export const initialContext = {
     contextState: initialState,
-    setContextState: () => { },
+    setContextState: () => {},
 };
 
-const Context = React.createContext(initialContext);
+const Cont = React.createContext(initialContext);
 
-export default Context;
 
-export function ContextProvider({ children, initial = initialState }) {
+export function ContextProvider({children, initial = initialState}) {
     const [state, dispatch] = React.useReducer(reducer, initial);
 
-    const contextState = state;
-    const setContextState = dispatch;
 
-    return <Context.Provider value={{ contextState, setContextState }}>{children}</Context.Provider>;
+const contextState = state;
+const setContextState = dispatch;
+
+return <Cont.Provider value={{contextState, setContextState }}>{children}</Cont.Provider>
+
 }
 
-export const useContextState = () => useContext(Context);
+export const useContextState = () => useContext(Cont);

@@ -6,13 +6,15 @@ import { useContextState } from '../Context';
 
 const Home=({navigation})=>{
   const [platos, setPlatos] = useState([]); //Setplatos le da el valor a platos
-  const [contextState, setContextState] = useContextState();
+  const {contextState, setContextState} = useContextState();
   
   
   useEffect(() => {
     if(!contextState.token){
       navigation.navigate("logIn")
-    }})
+    }
+    console.log("HAY TOKEN")
+  })
   
   return (
     <View>

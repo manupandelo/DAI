@@ -24,8 +24,8 @@ const CardPlato = (props) => {
     <View style={styles.container}>
       <Text style={styles.title}>{Detalle.title}</Text>
       <Item image={Detalle.image}/>         
-      <Text>${Detalle.pricePerServing} / {Detalle.readyInMinutes} mins.</Text>
-      <Text>Puntaje de Saludable: {Detalle.healthScore}</Text>
+      <Text>Health Score: {Detalle.healthScore}</Text>
+      <Text>${Detalle.pricePerServing}</Text>
       {
         Detalle.vegan ? 
             <Text>Vegano: Sí</Text>
@@ -55,7 +55,6 @@ const CardPlato = (props) => {
                   type: ActionTypes.SetDescontarPricePerServing,
                   value: Detalle.pricePerServing,
                 });
-
                 setContextState({
                   type: ActionTypes.SetDescontarHealthScore,
                   value: Detalle.healthScore,
@@ -73,6 +72,19 @@ const CardPlato = (props) => {
             <Button
               title="AGREGAR"
               onPress={async () => {
+                const menu=contextState
+                menu.forEach(element => {
+                  element.vegan ? platosVeganos++ : platosNoVeganos++
+              });
+
+              if (Detalle.vegan && menu.vegan == 2) {
+                  console.log("El menu ya tiene 2 platos veganos.")
+                  return null
+              } else if (!Detalle.vegan && menu.notVegan == 2) {
+                  console.log("El menu ya tiene 2 platos no veganos.")
+                  return null
+              }
+                
                 console.log("Agregando al menu")
                 setContextState({
                   type: ActionTypes.SetMenuPrecio,

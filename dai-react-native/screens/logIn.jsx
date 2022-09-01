@@ -2,7 +2,7 @@ import { DarkTheme } from '@react-navigation/native';
 import React, {useState, useEffect, useContext} from 'react';
 import { StyleSheet, Text, View, Image, ImageBackground, FlatList, TextInput, TouchableOpacity, ScrollView, Alert, Button} from 'react-native';
 import Context from '../Context';
-import {useContextState } from '../Context'
+import {useContextState, ActionTypes } from '../Context'
 import {enterlogin} from '../services/axios';
  
 const logIn = ({navigation}) => {
@@ -12,13 +12,17 @@ const logIn = ({navigation}) => {
     password: 'react',
   });
   
-  const onLogInPress = async (e) => {
+  const onLogInPress = async () => {
     
     if (!userState.email|| !userState.password){
       console.log("Por favor ingresar todos los datos")
     } else {
       console.log("datos completos, entra a loguearse")
       enterlogin(userState).then(() => {
+        setContextState({
+          type: ActionTypes.setToken,
+          value:true,
+        });
         console.log("entro")
         navigation.navigate('Home')
       })

@@ -7,6 +7,13 @@ import { useContextState } from '../Context';
 const Home=({navigation})=>{
   const [platos, setPlatos] = useState([]); //Setplatos le da el valor a platos
   const [contextState, setContextState] = useContextState();
+  
+  
+  useEffect(() => {
+    if(!contextState.token){
+      navigation.navigate("logIn")
+    }})
+  
   return (
     <View>
       <Text style={styles.titulo}>Buscador de Platos</Text>
@@ -14,7 +21,6 @@ const Home=({navigation})=>{
         <TextInput   
           style={styles.input}
           placeholder="Ingrese plato"
-
           onChangeText={text => {
             if(text.length > 2){
                 searchRecipe(text).then((data) => {
@@ -28,9 +34,6 @@ const Home=({navigation})=>{
       />      
       <ListaPlatos navigation={navigation} platos={platos}></ListaPlatos>
       <Text style={styles.titulo}>MENU</Text>
-      <ListaPlatos navigation={navigation} platos={contextState.menu.lista}></ListaPlatos>
-
-
     </View>
   );
 }

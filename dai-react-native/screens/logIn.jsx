@@ -6,8 +6,8 @@ import {enterLogin} from '../services/axios';
 const LogIn = ({navigation}) => {
   const { contextState, setContextState } = useContextState();
   const [userState, setUserState] = useState({  //Crea el objeto UserState y se aclara que este tiene email y password
-    email: 'challenge@alkemy.org',
-    password: 'react',
+    email: '',
+    password: '',
   });
   
   const onLogInPress = async () => {

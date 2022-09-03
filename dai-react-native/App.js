@@ -1,7 +1,6 @@
 import React from 'react';
 import MainStack from './navigation/MainStack';
-import logIn from './screens/logIn';
-import Context, { ContextProvider } from './Context';
+import { ContextProvider } from './Context';
 
 export default function App() {
   

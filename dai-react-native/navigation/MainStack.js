@@ -3,27 +3,27 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
-import logIn from '../screens/logIn'
+import LogIn from '../screens/LogIn'
 import Home from '../screens/Home'
 import Detalle from '../screens/Detalle'
 
 const Stack = createNativeStackNavigator()
 
-const MainStack =()=>{
+const MainStack = ()=>{
   
 return(
 <NavigationContainer>
     <Stack.Navigator>
         <Stack.Screen
-            name='logIn'
-            component={ logIn }
+            name='Home'
+            component={ Home }
             options={{
                 headerShown:false
             }}
         />
         <Stack.Screen
-            name='Home'
-            component={ Home }
+            name='logIn'
+            component={ LogIn }
             options={{
                 headerShown:false
             }}

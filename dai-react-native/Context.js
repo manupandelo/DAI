@@ -1,92 +1,33 @@
 import React, { useContext } from "react";
 
 export const initialState = {
-    token:"",
-    loading: false,
-    menu: {
-       precio: 0,
-       healthscorePromedio: 0,
-       healthscoreTotal:0,
-       cantPlatos: 0,
-       listaPlatos:[],
-       cantVeganos:0,
-       cantNoVeganos:0,
-       eliminarId: []
-    },
+    token: false,   //token de usuario
+    platos:[]       //array de platos del menu
 };
 
 export const ActionTypes = {
-    SetToken: 'SET_TOKEN',
-    SetLoading: 'SET_LOADING',
-    SetMenu: 'SET_MENU',
-    SetPrecio: 'SET_PRECIO',
-    SetHealthscorePromedio: 'SET_HEALTHSCORE_PROMEDIO',
-    SetHealthscoreTotal: 'SET_USER_FIRST_NAME',
-    SetCantPlatos: 'SET_CANT_PLATOS',
-    SetListaPlatos: 'SET_LISTA_PLATOS',
-    SetCantVeganos: 'SET_CANT_VEGANOS',
-    SetCantNoVeganos:'SET_CANT_NO_VEGANOS',
+    SetToken: 'SET_TOKEN',                         //SETS
+    SetPlatos: 'SET_PLATOS',
     SetEliminarId: 'SET_ELIMINAR_ID'
 };
 
 export const reducer = (state = {}, action) => {
     switch (action.type) {
       case ActionTypes.SetToken:
-        return {
+        return ({
             ...state,
-            token: action.value,
-        };
-        case ActionTypes.setUser:
-        return {
+            token: action.value,                 //SETS
+        });
+    case ActionTypes.SetPlatos:
+        return ({
             ...state,
-            user: action.value,
-        };
-        case ActionTypes.SetMenu:
-            return {
-                ...state,
-                menu: action.value,
-            };
-        case ActionTypes.SetPrecio:
-            return {
-                ...state,
-                precio: action.value,
-            };
-        case ActionTypes.SetHealthscorePromedio:
-            return {
-                ...state,
-                healthscorePromedio: action.value,
-            };
-            case ActionTypes.SetHealthscoreTotal:
-            return {
-                ...state,
-                healthscoreTotal: action.value,
-            };
-        case ActionTypes.SetLista:
-            return {
-                ...state,
-                menu: {
-                    ...state.menu,
-                    lista: [...state.menu.lista, action.value],
-                }
-            };
-        case ActionTypes.SetCantVeganos:
-            return {
-                ...state,
-                vegan: action.value,
-            };
-        case ActionTypes.SetCantNoVeganos:
-            return {
-                ...state,
-                notVegan:action.value,
-            };
-        case ActionTypes.SetEliminarId:
-            return {
-                ...state,
-                menu: {
-                    ...state.menu,
-                    lista: state.menu.listaPlatos.filter((plato) => plato.id !== action.value)
-                }
-            }
+            platos: [...state.platos, action.value],
+        });
+    case ActionTypes.SetEliminarId:
+        return ({
+            ...state,
+            platos: state.platos.filter((item) => item.id !== action.value),  //elimina el plato del array de platos
+        });
 default:
     return state;
     
@@ -108,7 +49,7 @@ export function ContextProvider({children, initial = initialState}) {
 const contextState = state;
 const setContextState = dispatch;
 
-return <Cont.Provider value={{contextState, setContextState }}>{children}</Cont.Provider>
+return <Cont.Provider value={{contextState, setContextState }}>{children}</Cont.Provider>   // devuelve el provider para que se pueda usar en el resto de la app
 
 }
 

@@ -1,35 +1,35 @@
 import axios from 'axios';
 
-export const searchRecipe = async (Plato) => {
+export const GetPlatos = async (Plato) => {
     console.log(Plato)
-    return axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=4412dd03082e4e76929bf09da5187843&query=${Plato}`,{})
+    return axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=edbf192134654e5bb292dd35ae063afd&query=${Plato}`,{})
     .then(async(res) => {
         console.log(res.data.results)
-        return res.data.results
+        return res.data.results   //devuelve un array de platos
     })
     .catch(() => {
       throw "error" //propagar error
     });
 };
 
-export const getRecipeInformation = async (id) => {
+export const getPlatoByID = async (id) => {
     console.log(id);
-    return axios.get(`https://api.spoonacular.com/recipes/${id}/information`,{params:{apiKey:'4412dd03082e4e76929bf09da5187843'}})
+    return axios.get(`https://api.spoonacular.com/recipes/${id}/information?apiKey=edbf192134654e5bb292dd35ae063afd`,{})  
     .then(function(res){
-        return res.data
+        return res.data  //devuelve el plato
     })
     .catch(() => {
-        throw "Error"
+        throw "Error" //propagar error
     });
 };
 
-export const enterlogin = async (user) => {
+export const enterLogin = async (user) => {
     console.log(user)
     return axios.post(`http://challenge-react.alkemy.org`, {
         ...user
       })
       .then(() => {
-        return true
+        return true   //si encuentra usuario devuelve true porque no hay un token que funcione aunque tambien se podria devolver el token para que se guarde en el context
       })
       .catch(() => {
         throw "error" //propagar error

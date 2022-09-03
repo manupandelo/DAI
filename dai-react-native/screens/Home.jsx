@@ -19,14 +19,16 @@ const Item = ({ title, image, navigation, id}) => (
 const Home=({navigation})=>{
   const [platos, setPlatos] = useState([]); //Setplatos le da el valor a platos
   const {contextState, setContextState} = useContextState();//Trae el contexto
+  let healthscore=0
   let precio = 0
-  let SumaHealthScore = 0
+  let sumaHealth = 0
   for (let i = 0; i < contextState.platos.length; i++) { //Recorre el array de platos
       precio += contextState.platos[i].pricePerServing
-      SumaHealthScore += contextState.platos[i].healthScore
+      sumaHealth += contextState.platos[i].healthScore
   }
-  const healthscore = SumaHealthScore / contextState.platos.length // saca el promedio del healthscore
-
+  if(sumaHealth > 0){
+    healthscore = sumaHealth / contextState.platos.length // saca el promedio del healthscore
+  }
   
   useEffect(() => {
     if(!contextState.token){ 
@@ -88,9 +90,7 @@ const styles = StyleSheet.create({
       backgroundColor:'white',
     },
     titulo: {
-      top: '8%',
-      marginLeft:'-13%',
-      fontSize: 34,
+      fontSize: 45,
       marginRight: 'auto',
       marginLeft: 'auto',
     },

@@ -130,10 +130,8 @@ const styles = StyleSheet.create({
     height: 300,
   },
   title:{
-    top: '8%',
-      marginLeft:'-13%',
-      fontSize: 34,
-      marginRight: 'auto',
-      marginLeft: 'auto',
+    fontSize: 45,
+    marginRight: 'auto',
+    marginLeft: 'auto',
   }
 });

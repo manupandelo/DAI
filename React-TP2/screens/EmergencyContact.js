@@ -8,19 +8,22 @@ import {
 } from "react-native";
 import PhoneInput from "react-native-phone-number-input";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import configTelContext from "../contexts/Context";
+import { ActionTypes, useContextState } from "../contexts/Context";
 
 const EmergencyContact = () => {
     const [value, setValue] = useState("");
     const [formattedValue, setFormattedValue] = useState("");
     const [telGuardado, setTelGuardado] = useState(null);
-    const { number, setNumber } = useContext(configTelContext)
+    const {contextState, setContextState} =  useContextState()
     const phoneInput = useRef<PhoneInput>(null);
 
     const storeData = async (value) => {
       try {
         await AsyncStorage.setItem('tel_number', value)
-        setNumber(value)
+        setContextState({
+          type: ActionTypes.SetNumber,
+          value: value,
+        })
       } catch (e) {
         console.log(e)
       }
@@ -30,7 +33,6 @@ const EmergencyContact = () => {
       <>
         <View style={styles.container}>
           <SafeAreaView style={styles.wrapper}>
-            <Text style={{textAlign: "center", paddingVertical: 20}}>Númer Guardado: {number}</Text>
             <PhoneInput
               ref={useRef(phoneInput)}
               value={telGuardado}

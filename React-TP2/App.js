@@ -1,31 +1,30 @@
 import React from 'react';
 import Home from './screens/Home';
-import Contacts from './screens/Contacts';
+import Contact from './screens/Contact';
 import AboutUs from './screens/AboutUs';
-import WeatherTime from './screens/Weather&Time';
+import WeatherTime from './screens/WeatherTime';
 import EmergencyContact from './screens/EmergencyContact';
 import EmergencyMessage from './screens/EmergencyMessage';
-import Context from './contexts/Context';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { ContextProvider } from './contexts/Context';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <>
-      <Context.Provider value={{ number, setNumber }}>
+      <ContextProvider>
         <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen name="Inicio" component={Home} />
-            <Stack.Screen name="Contactos" component={Contacts} />
-            <Stack.Screen name="Hora y Temperatura" component={WeatherTime} />
-            <Stack.Screen name="Teléfono de Emergencia" component={EmergencyContact} />
-            <Stack.Screen name="Acerca De" component={AboutUs} />
-            <Stack.Screen name="Mensaje de Emergencia" component={EmergencyMessage} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </Context.Provider>
+            <Stack.Navigator>
+              <Stack.Screen name="Inicio" component={Home} />
+              <Stack.Screen name="Contact" component={Contact} />
+              <Stack.Screen name="WeatherTime" component={WeatherTime} />
+              <Stack.Screen name="EmmergencyContact" component={EmergencyContact} />
+              <Stack.Screen name="AboutUs" component={AboutUs} />
+            </Stack.Navigator>
+          </NavigationContainer>
+      </ContextProvider>
     </>
   );
 }

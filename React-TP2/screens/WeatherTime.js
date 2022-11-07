@@ -5,8 +5,8 @@ import axios from "axios";
 import moment from "moment";
 require('moment/locale/es-mx');
 
-const GetWeather = async (location) => {
-    const API_KEY = "0e54bad46d4fb603caa6dbe45db4c31d"
+async function GetWeather(location) {
+    const API_KEY = "18ea3d94313c9b53579363009d844af9"
     const url = "https://api.openweathermap.org/data/2.5/weather"
 
     moment.locale("es-mx")
@@ -21,7 +21,6 @@ const GetWeather = async (location) => {
         }
     })
     .then((response) => {
-        console.log(response.data)
         return response.data;
     })
     .catch((error) => {
@@ -29,7 +28,7 @@ const GetWeather = async (location) => {
     });
 }
 
-const WeatherTime = async () => {
+export default function WeatherTime() {
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
     const [weather, setWeather] = useState();
@@ -62,42 +61,37 @@ const WeatherTime = async () => {
             }
         })();
     }, [location]);
-    
-    if(permissionGranted){
-        if(weather){
-            console.log("entra")
-            return( 
-                    <>
-                        <Text style={styles.text}>{moment().format('LLLL')}</Text>
-                        <Text style={styles.text}>{weather.description}</Text>
-                        <Text>{weather.sys.country} - {weather.name}</Text>
-                        <Text>La temperatura actual es de {weather.main.temp}°C</Text>
-                        <Text>La temperatura máxima es de {weather.main.temp_max}°C</Text>
-                        <Text>La temperatura mínima es de {weather.main.temp_min}°C</Text>
-                        <Text>La humedad es de {weather.main.humidity}%</Text>
-                        <Text>La velocidad del viento es de {weather.wind.speed}m/s</Text>
-                    </>
-            )
-        }else{
-            return(
-                <>
-                    <Text style={styles.text}>Hoy es {moment().format("dddd, MMMM Do YYYY, h:mm:ss a")}</Text>
-                    <Text style={styles.text}>Cargando...</Text>
-                </>
-            )
-        }
-    }else{
-        return(
-            <>
-                <Text style={styles.text}>Hoy es {moment().format("dddd, MMMM Do YYYY, h:mm:ss a")}</Text>
-                <Text style={styles.text}>No se puede obtener la ubicación porque no se han otorgado los permisos necesarios a la aplicacion</Text>
-            </>
-        )
-    }
 
+    return (
+        <View>
+            { permissionGranted ?
+                <View style={styles.container}>
+                    <Text style={{textTransform: 'capitalize'}}>{moment().format('LLLL')}hs</Text>
+                    {
+                        weather && weather ? (
+                            <>
+                                <Text>{weather.name}, {weather.sys && weather.sys.country}</Text>
+                                <Text style={{textTransform: 'capitalize'}}>{weather.weather && weather.weather[0].description}</Text>
+                                <Text>Temperatura: {weather.main && Math.round(weather.main.temp)}C°</Text>
+                                <Text>Temperatura Min: {weather.main && Math.round(weather.main.temp_min)}C°</Text>
+                                <Text>Temperatura Max: {weather.main && Math.round(weather.main.temp_max)}C°</Text>
+                                <Text>Humedad: {weather.main && weather.main.humidity}%</Text>
+                                <Text>Velocidad del viento: {weather.wind && weather.wind.speed}m/s</Text>
+                                <Text>Sensación Térmica: {weather.main && Math.round(weather.main.feels_like)}C°</Text>
+                            </>
+                        )
+                        :
+                            <Text>Getting the Weather...</Text>
+                    }
+                </View>
+            :
+                <View>
+                    <Text>The Application doesn't have the permits to get the weather</Text>
+                </View>
+            }
+        </View>
+    )
 }
-
-export default WeatherTime
 
 const styles = StyleSheet.create({
     container: {

@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 
-const Contacto = ({ data, emNumber }) => {
+export default function Contacto({ data, emmergencyNumber }) {
     let numeros = []
 
     return (
@@ -10,10 +10,10 @@ const Contacto = ({ data, emNumber }) => {
                 data.phoneNumbers && data.phoneNumbers.map((item) => {
                     if(!numeros.some((element) => item.number === element)) {
                         numeros.push(item.number)
-                        if (item.number === emNumber) {
+                        if (item.number === emmergencyNumber) {
                             return (
                                 <>
-                                    <Text key={item.id} style={{color: 'green'}}>{data.firstName} {data.lastName} (Emergencia)</Text>
+                                    <Text key={item.id} style={{color: 'green'}}>{data.firstName} {data.lastName} - Numero de Emergencia</Text>
                                     <Text style={{color: 'green'}}>{item.number}</Text>
                                 </>
                             )
@@ -31,8 +31,6 @@ const Contacto = ({ data, emNumber }) => {
         </View>
     )
 }
-
-export default Contacto;
 
 const styles = StyleSheet.create({
     container: {

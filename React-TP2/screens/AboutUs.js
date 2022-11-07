@@ -3,43 +3,43 @@ import { Text, View, StyleSheet, Button, Modal } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import QRCode from 'react-native-qrcode-svg';
 
-function Camera () {
+function Camara() {
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
-  
+
     useEffect(() => {
-      const getBarCodeScannerPermissions = async () => {
+        const getBarCodeScannerPermissions = async () => {
         const { status } = await BarCodeScanner.requestPermissionsAsync();
         setHasPermission(status === 'granted');
-      };
-  
-      getBarCodeScannerPermissions();
+        };
+
+        getBarCodeScannerPermissions();
     }, []);
-  
-    const handleBarCodeScanned = ({ type, data }) => {
-      setScanned(true);
-      alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+
+    const handleBarCodeScanned = ({ data }) => {
+        setScanned(true);
+        alert(data);
     };
-  
+
     if (hasPermission === null) {
-      return <Text>Requesting for camera permission</Text>;
+        return <Text>Pidiendo permiso para usar la Cámara</Text>;
     }
     if (hasPermission === false) {
-      return <Text>No access to camera</Text>;
+        return <Text>La aplicacion no tiene permiso para usar la cámara</Text>;
     }
-  
-    return (
-      <View style={styles.container}>
-        <BarCodeScanner
-          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-          style={StyleSheet.absoluteFillObject}
-        />
-        {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
-      </View>
-    );
-  }
 
-const AboutUs = () => {
+    return (
+        <View style={styles.container}>
+            <BarCodeScanner
+                onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+                style={StyleSheet.absoluteFillObject}
+            />
+            {scanned && <Button title={'Volver a Escanear'} onPress={() => setScanned(false)} />}
+        </View>
+    );
+}
+
+export default function AboutUs() {
     return (
         <View>
             <View style={styles.qr}>
@@ -48,52 +48,12 @@ const AboutUs = () => {
                 />
             </View>
             <View style={styles.camara}>
-                <Camera/>
+                <Camara/>
             </View>
         </View>
     );
 }
 
-export default AboutUs;
-
-
-
-/*
-  const [hasPermission, setHasPermission] = useState(null);
-  const [scanned, setScanned] = useState(false);
-
-  useEffect(() => {
-    const getBarCodeScannerPermissions = async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
-    };
-
-    getBarCodeScannerPermissions();
-  }, []);
-
-  const handleBarCodeScanned = ({ type, data }) => {
-    setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-  };
-
-  if (hasPermission === null) {
-    return <Text>Requesting for camera permission</Text>;
-  }
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
-  }
-
-  return (
-    <View style={styles.container}>
-      <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={StyleSheet.absoluteFillObject}
-      />
-      {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
-    </View>
-  );
-}
-*/
 const styles = StyleSheet.create({
     container: {
       flex: 1,

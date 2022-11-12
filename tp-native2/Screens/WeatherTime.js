@@ -4,8 +4,7 @@ import * as Location from 'expo-location';
 import axios from "axios";
 
 async function GetWeather(location) {
-    const API_KEY = "0e54bad46d4fb603caa6dbe45db4c31d"
-
+    const API_KEY = "18ea3d94313c9b53579363009d844af9"
     return await axios.get("https://api.openweathermap.org/data/2.5/weather?lat=" + location.coords.latitude + "&lon=" + location.coords.longitude + "&appid=" + API_KEY + "&units=metric&lang=es")
     .then((response) => {
         return response.data;
@@ -16,8 +15,6 @@ async function GetWeather(location) {
 }
 
 export default function WeatherTime() {
-    const [location, setLocation] = useState(null);
-    const [errorMsg, setErrorMsg] = useState(null);
     const [weather, setWeather] = useState();
     const [permissionGranted, setPermissionGranted] = useState(false)
 
@@ -28,49 +25,39 @@ export default function WeatherTime() {
             setPermissionGranted(true)
 
             let location = await Location.getCurrentPositionAsync({});
-            setLocation(location);
+            GetWeather(location).then(response => {setWeather(response)})
+            get
         } else {
             setPermissionGranted(false)
         }
-  
       })();
     }, []);
   
-    useEffect(() => {
-        (async () => {
-            let text = 'Waiting..';
-            if (errorMsg) {
-                text = errorMsg;
-                return null
-            } else if (location) {
-                GetWeather(location).then(response => {setWeather(response)})
-            }
-        })();
-    }, [location]);
+    
 
     return (
         <View style={styles.container}>
             { permissionGranted ?
                 <View>
                     {
-                        weather && weather ? (
+                        weather ? (
                             <>
-                                <Text>{weather.name}, {weather.sys && weather.sys.country}</Text>
-                                <Text style={{textTransform: 'capitalize'}}>{weather.weather && weather.weather[0].description}</Text>
-                                <Text>Temperatura: {weather.main && Math.round(weather.main.temp)}C°</Text>
-                                <Text> Temperatura Max: {weather.main && Math.round(weather.main.temp_max)}C°</Text>
-                                <Text>Temperatura Min: {weather.main && Math.round(weather.main.temp_min)}C°</Text>
-                                <Text> Sensación Térmica: {weather.main && Math.round(weather.main.feels_like)}C°</Text>
-                                <Text>Humedad: {weather.main && weather.main.humidity}%</Text>
+                                <Text>{weather.name}, {weather.sys.country}</Text>
+                                <Text>{weather.weather[0].description}</Text>
+                                <Text>Temperatura: {Math.round(weather.main.temp)}C°</Text>
+                                <Text>Temperatura Max: {Math.round(weather.main.temp_max)}C°</Text>
+                                <Text>Temperatura Min: {Math.round(weather.main.temp_min)}C°</Text>
+                                <Text>Sensación Térmica: {Math.round(weather.main.feels_like)}C°</Text>
+                                <Text>Humedad: {weather.main.humidity}%</Text>
                             </>
                         )
                         :
-                            <Text>Obteniendo Temperatura...</Text>
+                            <Text>Waiting...</Text>
                     }
                 </View>
             :
                 <View>
-                    <Text>La aplicación no tiene permiso para usar la ubicación</Text>
+                    <Text>No access to Location</Text>
                 </View>
             }
         </View>
@@ -80,7 +67,10 @@ export default function WeatherTime() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: "center",
-        alignitems: "center",
+        backgroundColor: '#fff',
+        height: '100%',
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 });

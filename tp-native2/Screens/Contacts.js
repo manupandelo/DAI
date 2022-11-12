@@ -2,29 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, FlatList } from 'react-native';
 import * as Contacts from 'expo-contacts';
 
-function getContacts() {
-  useEffect(() => {
-    (async () => {
-      const { status } = await Contacts.requestPermissionsAsync();
-      if (status === 'granted') {
-        const { data } = await Contacts.getContactsAsync({
-          fields: [Contacts.Fields.Emails],
-        });
-
-        if (data.length > 0) {
-          const contact = data[0];
-          console.log(contact);
-        }
-      }
-    })();
-  }, []);
-
-}
-
 export default function AllContacts() {
     const [contact, setContact] = useState([]);
     const [permissionGranted, setPermissionGranted] = useState(false)
-    
+    const [Guardado, setGuardado] = useState(false);
+
     useEffect(() => {
         (async () => {
             const { status } = await Contacts.requestPermissionsAsync();
@@ -40,22 +22,25 @@ export default function AllContacts() {
             }
         })();
     }, []);
+
     
+
     return (
-        <View>
+        <View style={styles.container}>
             {permissionGranted ? (
                 <View>
                     <FlatList
                         data={contact}
                         renderItem={({ item }) => (
-                            <View>
+                            <View style={{marginVertical: 10}}>
                                 <Text>{item.name}</Text>
-                                {item.phoneNumbers && item.phoneNumbers.map((phone) => (
-                                    <Text>{phone?.number}</Text>
-                                ))}
+                                {item.phoneNumbers ? (
+                                    <Text>{item.phoneNumbers[0].number}</Text>
+                                ) : (
+                                    null
+                                )}
                             </View>
                         )}
-
                         keyExtractor={item => item.id}
                     />
                 </View>

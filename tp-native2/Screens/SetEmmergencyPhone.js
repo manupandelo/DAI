@@ -1,26 +1,29 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useContextState, ActionTypes } from "../context";
 import React, { useEffect, useState } from "react";
 import { Text, StyleSheet, Button, Image, View, TextInput } from "react-native";
 
 export default function SetEmmergencyPhone() {
-    const { contextState, setContextState } = useContextState();
-    const [phone, setPhone] = useState(contextState.phone);
+    const [phone, setPhone] = useState();
     const [error, setError] = useState(false);
+    const [Guardado, setGuardado] = useState(false);
+
+    useEffect(async() => {
+        setGuardado(await AsyncStorage.getItem("phone"));
+    }, []);
 
     const savePhone = async () => {
         if (phone.length < 10) {
             setError(true);
         } else {
             setError(false);
-            setContextState({ type: ActionTypes.SetPhone, value: phone });
             await AsyncStorage.setItem('phone', phone);
+            setGuardado(await AsyncStorage.getItem("phone"));
         }
     }
 
     return (
         <View>
-            <Text>Numero Guardado: {contextState.phone}</Text>
+            <Text style={styles.medio}>Numero Guardado: {Guardado}</Text>
             <TextInput
                 style={styles.input}
                 placeholder="Celular de emergencia"
@@ -36,14 +39,20 @@ export default function SetEmmergencyPhone() {
 
 const styles = StyleSheet.create({
     input: {
-        flex: 1,
-        height: 40,
-        margin: 12,
+        width: 300,
+        marginVertical: 30,
+        padding: 10,
         borderWidth: 1,
+        borderColor: "#000",
+        borderRadius: 50,
+        alignSelf: "center",
     },
     error: {
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignSelf: "center",
         color: 'red',
+    },
+    medio: {
+        alignSelf: 'center',
+        marginVertical: 20,
     },
 });

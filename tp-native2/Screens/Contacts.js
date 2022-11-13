@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, FlatList } from 'react-native';
 import * as Contacts from 'expo-contacts';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function AllContacts() {
     const [contact, setContact] = useState([]);
     const [permissionGranted, setPermissionGranted] = useState(false)
-    const [Guardado, setGuardado] = useState(false);
+    const [guardado, setGuardado] = useState();
+
+    useEffect(() => {
+        const getGuardado = async () => {
+            setGuardado(await AsyncStorage.getItem("phone"));
+        }
+        getGuardado();
+    }, []);
 
     useEffect(() => {
         (async () => {
@@ -16,6 +24,7 @@ export default function AllContacts() {
                     fields: [Contacts.Fields.PhoneNumbers],
                 });
                 setContact(data)
+                console.log(data[1])
             }
             else {
                 setPermissionGranted(false)
@@ -36,6 +45,11 @@ export default function AllContacts() {
                                 <Text>{item.name}</Text>
                                 {item.phoneNumbers ? (
                                     <Text>{item.phoneNumbers[0].number}</Text>
+                                ) : (
+                                    null
+                                )}
+                                {item.phoneNumbers && item.phoneNumbers[0].number == guardado ? (
+                                    <Text style={{color: "green"}}>Numero de emergencia</Text>
                                 ) : (
                                     null
                                 )}

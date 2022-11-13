@@ -7,10 +7,13 @@ export default function SetEmmergencyPhone() {
     const [error, setError] = useState(false);
     const [Guardado, setGuardado] = useState(false);
 
-    useEffect(async() => {
-        setGuardado(await AsyncStorage.getItem("phone"));
+    useEffect(() => {
+        const getGuardado = async () => {
+            setGuardado(await AsyncStorage.getItem("phone"));
+        }
+        getGuardado();
     }, []);
-
+    
     const savePhone = async () => {
         if (phone.length < 10) {
             setError(true);
